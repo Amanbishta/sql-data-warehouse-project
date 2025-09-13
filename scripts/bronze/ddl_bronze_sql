@@ -1,3 +1,106 @@
+/*
+=========================================================================================
+DDL Script: Create Bronze Layer
+=========================================================================================
+Script Purpose:
+	This script creates table in the 'bronze' schema, droop exixting tables
+	if they already exist.
+	Run this script to re-define the DDL structure of 'bronze' Tables
+=========================================================================================
+*/
+
+IF OBJECT_ID ('bronze.erp_CUST_AZ12', 'U') IS NOT NULL
+	DROP TABLE bronze.erp_CUST_AZ12;
+CREATE TABLE bronze.erp_CUST_AZ12(
+	CID NVARCHAR(50),
+	BDATE DATE,
+	GEN NVARCHAR(50)
+);
+
+IF OBJECT_ID ('bronze.erp_LOC_A101', 'U') IS NOT NULL
+	DROP TABLE bronze.erp_LOC_A101;
+CREATE TABLE bronze.erp_LOC_A101(
+	CID NVARCHAR(50),
+	CNTRY NVARCHAR(50)
+);
+
+IF OBJECT_ID ('bronze.erp_PX_CAT_G1V2', 'U') IS NOT NULL
+	DROP TABLE bronze.erp_PX_CAT_G1V2;
+CREATE TABLE bronze.erp_PX_CAT_G1V2(
+	ID NVARCHAR(50),
+	CAT NVARCHAR(50),
+	SUBCAT NVARCHAR(50),
+	MAINTENANCE NVARCHAR(50)
+);
+
+-- 
+IF OBJECT_ID('bronze.crm_sales_detals', 'U') IS NOT NULL
+	DROP TABLE bronze.crm_sales_detals;
+CREATE TABLE bronze.crm_sales_detals (
+	sls_ord_num NVARCHAR(50),
+	sls_prd_key NVARCHAR(50),
+	sls_cust_id SMALLINT,
+	sls_order_dt INT,
+	sls_ship_dt INT,
+	sls_due_dt INT,
+	sls_sales SMALLINT,
+	sls_quantity TINYINT,
+	sls_price SMALLINT
+);
+
+IF OBJECT_ID ('bronze.erp_CUST_AZ12', 'U') IS NOT NULL
+	DROP TABLE bronze.erp_CUST_AZ12;
+CREATE TABLE bronze.erp_CUST_AZ12(
+	CID NVARCHAR(50),
+	BDATE DATE,
+	GEN NVARCHAR(50)
+);
+
+IF OBJECT_ID ('bronze.erp_LOC_A101', 'U') IS NOT NULL
+	DROP TABLE bronze.erp_LOC_A101;
+CREATE TABLE bronze.erp_LOC_A101(
+	CID NVARCHAR(50),
+	CNTRY NVARCHAR(50)
+);
+
+IF OBJECT_ID ('bronze.erp_PX_CAT_G1V2', 'U') IS NOT NULL
+	DROP TABLE bronze.erp_PX_CAT_G1V2;
+CREATE TABLE bronze.erp_PX_CAT_G1V2(
+	ID NVARCHAR(50),
+	CAT NVARCHAR(50),
+	SUBCAT NVARCHAR(50),
+	MAINTENANCE NVARCHAR(50)
+);
+
+
+SELECT * FROM bronze.crm_sales_details;
+
+BULK INSERT bronze.erp_CUST_AZ12
+FROM 'C:\Users\bisht\Desktop\Data Warehouse\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_erp\CUST_AZ12.CSV'
+WITH (
+	FIRSTROW =2,
+	FIELDTERMINATOR =',',
+	TABLOCK
+);
+
+SELECT * FROM bronze.erp_CUST_AZ12;
+
+BULK INSERT bronze.erp_LOC_A101
+FROM 'C:\Users\bisht\Desktop\Data Warehouse\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_erp\LOC_A101.csv'
+WITH (
+	FIRSTROW = 2,
+	FIELDTERMINATOR =',',
+	TABLOCK
+);
+
+
+BULK INSERT bronze.erp_PX_CAT_G1V2
+FROM 'C:\Users\bisht\Desktop\Data Warehouse\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_erp\PX_CAT_G1V2.csv'
+WITH (
+	FIRSTROW =2,
+	FIELDTERMINATOR =',',
+	TABLOCK
+);
 
 EXEC bronze.load_bronze
 
